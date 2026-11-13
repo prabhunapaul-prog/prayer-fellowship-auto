@@ -1,0 +1,19 @@
+
+name: Prayer Points Daily Update
+
+on:
+  schedule:
+    - cron: '30 0,12 * * *'
+  workflow_dispatch:
+
+jobs:
+  prayer-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start prayer update
+        run: |
+          echo "Prayer Fellowship automatic update started"
+          echo "Morning and evening schedule is active"
+          date -u
+          

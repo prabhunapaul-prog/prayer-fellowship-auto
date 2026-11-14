@@ -6,14 +6,30 @@ on:
     - cron: '30 0,12 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   prayer-update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Start prayer update
+      - name: Get repository files
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install required libraries
         run: |
-          echo "Prayer Fellowship automatic update started"
-          echo "Morning and evening schedule is active"
-          date -u
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Collect prayer news
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          python prayer_update.py
           
